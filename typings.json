@@ -1,0 +1,13 @@
+{
+  "globalDependencies": {
+    "agenda": "registry:dt/agenda#0.8.9+20160316171810",
+    "body-parser": "registry:dt/body-parser#0.0.0+20160317120654",
+    "express": "registry:dt/express#4.0.0+20160317120654",
+    "node": "registry:dt/node#6.0.0+20160524002506",
+    "react": "registry:dt/react#0.14.0+20160526134601",
+    "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",
+    "socket.io": "registry:dt/socket.io#1.4.4+20160317120654",
+    "socket.io-client": "registry:dt/socket.io-client#1.4.4+20160317120654",
+    "whatwg-fetch": "registry:dt/whatwg-fetch#0.0.0+20160524142046"
+  }
+}
