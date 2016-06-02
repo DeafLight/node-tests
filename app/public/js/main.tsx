@@ -20,6 +20,10 @@ socket.on('connect', () => {
     socket.on('authenticated', () => {
         console.log('authenticated!!');
     });
-}).on('helloWorld', res => ReactDom.render(<div><p>{JSON.stringify(res) }</p><HelloWorld /></div>, document.getElementById("app")));
+}).on('helloWorld', res => ReactDom.render(
+    <div>
+        <p>{JSON.stringify(res) }</p>
+        <HelloWorld />
+    </div>, document.getElementById("app")));
 // socket.connect();
 
