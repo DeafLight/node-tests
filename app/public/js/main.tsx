@@ -15,6 +15,11 @@ class HelloWorld extends React.Component<any, any>{
 }
 
 var socket = socketIO.connect('http://localhost:3000');
-socket.on('helloWorld', res => ReactDom.render(<div><p>{JSON.stringify(res) }</p><HelloWorld /></div>, document.getElementById("app")));
-socket.connect();
+socket.on('connect', () => {
+    socket.emit('authentication', { username: "John", password: "secret" });
+    socket.on('authenticated', () => {
+        console.log('authenticated!!');
+    });
+}).on('helloWorld', res => ReactDom.render(<div><p>{JSON.stringify(res) }</p><HelloWorld /></div>, document.getElementById("app")));
+// socket.connect();
 

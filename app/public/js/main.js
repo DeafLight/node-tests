@@ -28,7 +28,11 @@ var __extends = (this && this.__extends) || function (d, b) {
         return HelloWorld;
     }(React.Component));
     var socket = socketIO.connect('http://localhost:3000');
-    socket.on('helloWorld', function (res) { return ReactDom.render(React.createElement("div", null, React.createElement("p", null, JSON.stringify(res)), React.createElement(HelloWorld, null)), document.getElementById("app")); });
-    socket.connect();
+    socket.on('connect', function () {
+        socket.emit('authentication', { username: "John", password: "secret" });
+        socket.on('authenticated', function () {
+            console.log('authenticated!!');
+        });
+    }).on('helloWorld', function (res) { return ReactDom.render(React.createElement("div", null, React.createElement("p", null, JSON.stringify(res)), React.createElement(HelloWorld, null)), document.getElementById("app")); });
 });
 //# sourceMappingURL=main.js.map

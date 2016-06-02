@@ -3,15 +3,16 @@
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
     else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports", 'express', 'path', 'body-parser', 'socket.io', 'agenda'], factory);
+        define(["require", "exports", 'agenda', 'body-parser', 'express', 'path', 'socket.io', 'socketio-auth'], factory);
     }
 })(function (require, exports) {
     "use strict";
+    var Agenda = require('agenda');
+    var bodyParser = require('body-parser');
     var express = require('express');
     var path = require('path');
-    var bodyParser = require('body-parser');
-    var socketIO = require('socket.io');
-    var Agenda = require('agenda');
+    var socketIo = require('socket.io');
+    var socketIoAuth = require('socketio-auth');
     var app = express();
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
@@ -27,7 +28,12 @@
         console.log('App listening at http://%s:%s', server.address().address, server.address().port);
         console.log(__dirname);
     });
-    var io = socketIO.listen(server);
+    var io = socketIo.listen(server);
+    socketIoAuth(io, {
+        authenticate: function (socket, data, callback) {
+            return callback(null, true);
+        }
+    });
     io.sockets.on('connection', function (socket) {
         console.log("user connected");
         socket.emit('helloWorld', { hello: 'world' });
