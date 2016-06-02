@@ -56,12 +56,8 @@ io.sockets.on('connection', socket => {
     console.log("user connected");
     socket.emit('helloWorld', { hello: 'world' });
     socket.on('refreshRepos', data => {
-        console.log(data);
-        console.log('refreshRepos called');
-
         let url = `https://api.github.com/users/${data && data.user}/repos`;
         request(url, { json: true, headers: { 'user-agent': 'node.js' } }, (err, response, data) => {
-            console.log(data);
             socket.emit('reposRefreshed', data)
         });
     });

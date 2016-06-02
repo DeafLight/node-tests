@@ -11,13 +11,11 @@ export default class RepositoryList extends React.Component<any, any>{
         this.state = { repos: [] };
         this.socket = io('http://localhost:3000');
         this.socket.on('reposRefreshed', (repos: Object) => {
-            console.log(typeof repos);
             this.setState({ repos: repos });
         });
     }
 
     componentDidMount() {
-        console.log('component did mount');
         this.socket.emit('refreshRepos', { user: 'dev-i-ant' });
     }
 

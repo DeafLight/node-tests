@@ -23,12 +23,10 @@ var __extends = (this && this.__extends) || function (d, b) {
             this.state = { repos: [] };
             this.socket = io('http://localhost:3000');
             this.socket.on('reposRefreshed', function (repos) {
-                console.log(typeof repos);
                 _this.setState({ repos: repos });
             });
         }
         RepositoryList.prototype.componentDidMount = function () {
-            console.log('component did mount');
             this.socket.emit('refreshRepos', { user: 'dev-i-ant' });
         };
         RepositoryList.prototype.render = function () {
