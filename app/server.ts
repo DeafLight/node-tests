@@ -3,7 +3,6 @@ import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as path from 'path';
 import * as socketIo from 'socket.io';
-import * as request from 'request';
 import socketIoAuth = require('socketio-auth');
 
 var app = express();
@@ -55,18 +54,7 @@ socketIoAuth(io, {
 io.sockets.on('connection', socket => {
     console.log("user connected");
     socket.emit('helloWorld', { hello: 'world' });
-    socket.on('refreshRepos', data => {
-        console.log(data);
-        console.log('refreshRepos called');
-
-        let url = `https://api.github.com/users/${data && data.user}/repos`;
-        request(url, { json: true, headers: { 'user-agent': 'node.js' } }, (err, response, data) => {
-            console.log(data);
-            socket.emit('reposRefreshed', data)
-        });
-    });
 });
-
 
 // test agenda job scheduler
 var mongoConnectionString = "mongodb://localhost/agenda";
@@ -79,7 +67,7 @@ agenda.define('test', (job, done) => {
 });
 
 agenda.on('ready', () => {
-    agenda.every('10 minutes', 'test');
+    agenda.every('3 seconds', 'test');
 
     agenda.start();
 });

@@ -8,28 +8,24 @@ var __extends = (this && this.__extends) || function (d, b) {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
     else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports", 'react', './repo', 'socket.io-client'], factory);
+        define(["require", "exports", 'react', './api', './repo'], factory);
     }
 })(function (require, exports) {
     "use strict";
     var React = require('react');
+    var api_1 = require('./api');
     var repo_1 = require('./repo');
-    var io = require('socket.io-client');
     var RepositoryList = (function (_super) {
         __extends(RepositoryList, _super);
         function RepositoryList(props) {
-            var _this = this;
             _super.call(this, props);
             this.state = { repos: [] };
-            this.socket = io('http://localhost:3000');
-            this.socket.on('reposRefreshed', function (repos) {
-                console.log(typeof repos);
-                _this.setState({ repos: repos });
-            });
         }
         RepositoryList.prototype.componentDidMount = function () {
-            console.log('component did mount');
-            this.socket.emit('refreshRepos', { user: 'dev-i-ant' });
+            var _this = this;
+            api_1.reposForUser('dev-i-ant').then(function (repos) {
+                return _this.setState({ repos: repos });
+            });
         };
         RepositoryList.prototype.render = function () {
             var repos = this.state.repos.map(function (repo) { return React.createElement("li", {key: repo.id}, React.createElement(repo_1.default, {raw: repo})); });

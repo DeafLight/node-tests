@@ -3,7 +3,7 @@
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
     else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports", 'agenda', 'body-parser', 'express', 'path', 'socket.io', 'request', 'socketio-auth'], factory);
+        define(["require", "exports", 'agenda', 'body-parser', 'express', 'path', 'socket.io', 'socketio-auth'], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -12,7 +12,6 @@
     var express = require('express');
     var path = require('path');
     var socketIo = require('socket.io');
-    var request = require('request');
     var socketIoAuth = require('socketio-auth');
     var app = express();
     app.use(bodyParser.urlencoded({ extended: true }));
@@ -38,15 +37,6 @@
     io.sockets.on('connection', function (socket) {
         console.log("user connected");
         socket.emit('helloWorld', { hello: 'world' });
-        socket.on('refreshRepos', function (data) {
-            console.log(data);
-            console.log('refreshRepos called');
-            var url = "https://api.github.com/users/" + (data && data.user) + "/repos";
-            request(url, { json: true, headers: { 'user-agent': 'node.js' } }, function (err, response, data) {
-                console.log(data);
-                socket.emit('reposRefreshed', data);
-            });
-        });
     });
     var mongoConnectionString = "mongodb://localhost/agenda";
     var agenda = new Agenda({ db: { address: mongoConnectionString } });
@@ -55,7 +45,7 @@
         done();
     });
     agenda.on('ready', function () {
-        agenda.every('10 minutes', 'test');
+        agenda.every('3 seconds', 'test');
         agenda.start();
     });
 });
